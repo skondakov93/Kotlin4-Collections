@@ -34,16 +34,16 @@ class NaturalList(n: Int) : List<Int> {
     /**
      * Вернуть под-список этого списка, включая [fromIndex] и НЕ включая [toIndex]
      */
-    override fun subList(fromIndex: Int, toIndex: Int): List<Int> {
-        TODO("Not yet implemented")
+    override fun subList(fromIndex: Int, toIndex: Int): List<Int> = buildList {
+        for (n in fromIndex until toIndex) {
+            add(n + 1)
+        }
     }
 
     /**
      * Returns true if list contains all numbers in the collection
      */
-    override fun containsAll(elements: Collection<Int>): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun containsAll(elements: Collection<Int>): Boolean = elements.all { it <= size }
 
     override fun toString(): String {
         return "NaturalList(1..$size)"
@@ -53,13 +53,23 @@ class NaturalList(n: Int) : List<Int> {
      * Функция должна возвращать true, если сравнивается с другой реализацией списка тех же чисел
      * Например, NaturalList(5) должен быть равен listOf(1,2,3,4,5)
      */
-    override fun equals(other: Any?): Boolean = false
+    override fun equals(other: Any?): Boolean {
+        if (other is List<*>) {
+            for (n in 1..size) {
+                if (other[n -  1]?.equals(n) != true) {
+                    return false
+                }
+            }
+            return true
+        }
+        return false
+    }
 
     /**
      * Функция должна возвращать "хороший" hash-code. Вы можете использовть любой удобный алгоритм
      * хэш-функции, или подсмотреть реализацию в одном из библиотечных списков.
      */
-    override fun hashCode(): Int = -1
+    override fun hashCode(): Int = size.hashCode()
 }
 
 private class NaturalIterator(private val n: Int) : Iterator<Int> {
